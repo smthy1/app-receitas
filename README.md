@@ -13,10 +13,10 @@ This is a recipe search app, built using HTML, Tailwind CSS (via CDN) and JavaSc
 
 
 ## ⚙️ Technologies used
-
-    - HTML5
-    - Tailwind CSS (via CDN)
-    - JavaScript
+   
+   - HTML5
+   - Tailwind CSS (via CDN)
+   - JavaScript
 
 
 ## 🧠 What I learned
