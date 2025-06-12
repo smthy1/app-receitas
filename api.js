@@ -1,3 +1,13 @@
+const input = document.getElementById('nome');
+const searchBtn = document.getElementById('search-btn');
+
+input.addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        searchBtn.click();
+    }
+})
+
 window.search = async function () {
     const buscarReceita = document.getElementById('nome');
     const res = document.getElementById('result');
