@@ -2,6 +2,7 @@ import * as userService from '../services/userService.js';
 import 'dotenv/config';
 import type { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
+import { redis } from '../configs/redis.js';
 
 
 const registerUser = async (req: Request, res: Response ) => {
@@ -31,19 +32,27 @@ const login = async (req: Request, res: Response) => {
         if (logUser.user) {
             const userId = logUser.user._id;
             const username = logUser.user.name;
-            const key = process.env.KEY as string;
+            const key = process.env.ACCESS_KEY as string;
 
-            const token = jwt.sign({
+            const accessToken = jwt.sign({
                 userId: userId,
                 username: username,
             }, key, { expiresIn: '1h' });
+            
+            const refreshToken = jwt.sign({
+                userId: userId,
+                username: username,
+            }, key, { expiresIn: '7d' });
+            
+            await redis.setEx(`refreshToken:${userId}`, 7 * 24 * 60 * 60, JSON.stringify(refreshToken));
 
-            return res.status(200).json({ message: "Usuário autenticado", token: token });
+            return res.status(200).json({ message: "Usuário autenticado", token: accessToken });
         }
     } catch(err) {
         return res.status(500).json({ erro: `Erro inesperado: ${err}` });
     }
 }
+
 
 
 export { registerUser, login }
