@@ -1,0 +1,39 @@
+services:
+  api:
+    build: ./backend
+    container_name: api
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URI=${MONGO_URI}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+    depends_on:
+      - mongo
+      - redis
+    volumes:
+      - ./backend:/app:cached
+      - /app/node_modules
+
+  mongo:
+    image: mongo
+    container_name: recipes_mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  redis:
+    image: redis:latest
+    container_name: recipes_redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  mongo_data:
+  redis_data:
