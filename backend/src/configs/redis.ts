@@ -2,13 +2,15 @@ import { createClient } from "redis";
 import 'dotenv/config';
 
 const password = process.env.REDIS_PASSWORD as string;
+const host = process.env.REDIS_HOST as string;
+const port = process.env.REDIS_PORT as unknown;
 
 export const redis = createClient({
     socket: {
-        host: "127.0.0.1",
-        port: 6379
+        host: host,
+        port: port as number
     },
-    password: password!
+    password: password
 });
 
 await redis.connect();
